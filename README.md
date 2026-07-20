@@ -69,6 +69,10 @@ To find every spot that needs your attention (and confirm you got them all when
 done), grep for the markers:
 `grep -rnE '<PROJECT>|<[a-z][^>]*>|\[EXAMPLE|<!--' --include='*.md' .`
 
+**Optional CI:** a GitHub Action that fails on broken internal doc links ships
+**disabled**. Enable it any time with
+`git mv .github/workflows/link-check.yml.disabled .github/workflows/link-check.yml`.
+
 ## Why these rules
 
 The hygiene rules in `CLAUDE.md` look fussy until you've watched docs rot. Each
@@ -102,6 +106,8 @@ decisions) and the future (open/candidate work).
 ```
 CLAUDE.md              how-to-work instructions (agent auto-loads)
 SETUP.md               one-time setup dialog (agent-run; self-deletes after)
+.github/workflows/
+  link-check.yml.disabled   optional CI (rename to enable — fails on broken links)
 context/               agent-owned OKF knowledge bundle
   index.md             bundle catalog (read first)
   CONVENTIONS.md       frontmatter, types, ADR format, ingest/query/lint
