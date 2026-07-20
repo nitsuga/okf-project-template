@@ -38,9 +38,12 @@ or strip.
 
 - `CLAUDE.md` — the `# <PROJECT>` heading + description; the **Project
   preferences** section (commit policy, repo layout, build/test/run, constraints).
-- `README.md` — replace this template's own title/intro with the user's project
-  (this is now *their* README). Keep the Quick Start only if they want others to
-  re-template from their repo; otherwise trim it.
+- `README.md` — this becomes *their project's* README: replace the template's
+  title/intro and the **adoption sections** (Quick Start, Manual setup, the
+  template's own Structure block) with content about their project. Keep "The doc
+  taxonomy" / "Why these rules" if useful for their contributors (or move them to
+  `docs/`). Keep the Quick Start only if they want others to re-template from
+  their repo.
 - `context/CONVENTIONS.md` — set the real `timestamp`; trim/rename the type
   vocabulary to their domain.
 - `context/index.md` — the `# <PROJECT>` title.
