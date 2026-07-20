@@ -65,6 +65,10 @@ result, done yourself:
      `context/decisions/index.md`, `planning/ROADMAP.md`, `planning/PROGRESS.md`
 5. Start working. On the first real decision, write ADR `0001`.
 
+To find every spot that needs your attention (and confirm you got them all when
+done), grep for the markers:
+`grep -rnE '<PROJECT>|<[a-z][^>]*>|\[EXAMPLE|<!--' --include='*.md' .`
+
 ## Why these rules
 
 The hygiene rules in `CLAUDE.md` look fussy until you've watched docs rot. Each

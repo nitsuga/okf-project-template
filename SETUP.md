@@ -11,6 +11,16 @@ answers to fill in the placeholders, then delete the example artifacts. Don't
 interrogate: offer sensible defaults, let the user answer loosely or say "you
 decide", and skip anything they don't care about yet.
 
+**Find every fill-in** first:
+
+```
+grep -rnE '<PROJECT>|<[a-z][^>]*>|\[EXAMPLE|<!--' --include='*.md' .
+```
+
+That surfaces the placeholders (`<PROJECT>`, `<…>`), example artifacts
+(`[EXAMPLE]`), and setup guidance comments (`<!-- … -->`) — everything to replace
+or strip.
+
 ## 1. Ask (group these — 2–4 at a time, not all at once)
 
 - **Identity** — What's the project called, and a one-line description of what it
@@ -41,6 +51,9 @@ decide", and skip anything they don't care about yet.
   whether they want to keep it for their project or swap in their own; update the
   README license line to match.
 
+As you edit each file, also **delete its `<!-- … -->` guidance comments** — those
+are setup hints, not project content.
+
 ## 3. Delete the example artifacts
 
 - `context/decisions/0001-example-decision.md` — or **keep it** as their real ADR
@@ -62,6 +75,12 @@ When setup is complete:
 
 - **Delete this `SETUP.md`.**
 - **Delete the "First run — set up this project" section from `CLAUDE.md`.**
+- **Verify nothing's left** — with this file gone, this should return nothing:
+
+  ```
+  grep -rnE '<PROJECT>|\[EXAMPLE|<!--' --include='*.md' .
+  ```
+
 - Commit it all (e.g. "Set up <project> from okf-project-template").
 
 The onboarding scaffolding is now gone; the project runs on its own docs. From
