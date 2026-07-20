@@ -114,4 +114,6 @@ docs/                  human-facing guides
 
 ## License
 
-Add your own. This template imposes none.
+[0BSD](LICENSE) (Zero-Clause BSD) — use, copy, and modify this template freely,
+**no attribution required**. Projects you generate from it are yours to license
+however you like (keep 0BSD or swap in your own `LICENSE`).

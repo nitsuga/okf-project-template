@@ -37,6 +37,9 @@ decide", and skip anything they don't care about yet.
 - `planning/ROADMAP.md` — Scope + Phases from their answers.
 - `planning/PROGRESS.md` — the `# <PROJECT>` title, "Now", and the first "Next"
   tasks.
+- `LICENSE` — the template ships **0BSD** (permissive, no attribution). Ask
+  whether they want to keep it for their project or swap in their own; update the
+  README license line to match.
 
 ## 3. Delete the example artifacts
 
