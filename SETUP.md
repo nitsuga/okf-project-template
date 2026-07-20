@@ -1,0 +1,65 @@
+# Project setup (one-time)
+
+<!-- This file guides an AGENT through turning a fresh copy of
+     okf-project-template into a real project, via a short dialog with the user.
+     It removes itself when done (step 5). A user who prefers to set up by hand
+     can follow README § "Manual setup" instead. -->
+
+You (the agent) are helping the user customize this freshly-copied template. Run
+it as a **short, conversational dialog** — ask a few grouped questions, use the
+answers to fill in the placeholders, then delete the example artifacts. Don't
+interrogate: offer sensible defaults, let the user answer loosely or say "you
+decide", and skip anything they don't care about yet.
+
+## 1. Ask (group these — 2–4 at a time, not all at once)
+
+- **Identity** — What's the project called, and a one-line description of what it
+  is? Its scope (what's in, and anything explicitly out)?
+- **Preferences** — Commit-message convention? The main code/asset directories
+  and what each holds? How do you build / test / run it? Any coding style or
+  constraints an agent must respect?
+- **Domain types** *(optional)* — Beyond the starter concept types (`Reference`,
+  `Concept`, `Component`, `Decision`), any domain-specific type to add or rename
+  (e.g. `Dataset`, `Standard Reference`)? Fine to skip and add later.
+- **Starting point** — What's the first phase or two, and the first 1–3 tasks?
+  Any external sources/specs to pull into `references/` up front?
+
+## 2. Fill in (from the answers)
+
+- `CLAUDE.md` — the `# <PROJECT>` heading + description; the **Project
+  preferences** section (commit policy, repo layout, build/test/run, constraints).
+- `README.md` — replace this template's own title/intro with the user's project
+  (this is now *their* README). Keep the Quick Start only if they want others to
+  re-template from their repo; otherwise trim it.
+- `context/CONVENTIONS.md` — set the real `timestamp`; trim/rename the type
+  vocabulary to their domain.
+- `context/index.md` — the `# <PROJECT>` title.
+- `planning/ROADMAP.md` — Scope + Phases from their answers.
+- `planning/PROGRESS.md` — the `# <PROJECT>` title, "Now", and the first "Next"
+  tasks.
+
+## 3. Delete the example artifacts
+
+- `context/decisions/0001-example-decision.md` — or **keep it** as their real ADR
+  0001 recording that they adopted this workflow (ask which they prefer).
+- The `[EXAMPLE]` entries in `context/log.md`, `context/index.md`,
+  `context/decisions/index.md`, `planning/ROADMAP.md`, `planning/PROGRESS.md`.
+- `references/README.md` / `docs/README.md` once real content lands (fine to leave
+  for now).
+
+## 4. Ingest any starting sources (optional)
+
+If they named specs/repos to ingest, follow `context/CONVENTIONS.md` § Operations
+(Ingest): read the source into `references/`, write a concept in `context/`, add
+an `index.md` entry, append a `log.md` line.
+
+## 5. Self-clean
+
+When setup is complete:
+
+- **Delete this `SETUP.md`.**
+- **Delete the "First run — set up this project" section from `CLAUDE.md`.**
+- Commit it all (e.g. "Set up <project> from okf-project-template").
+
+The onboarding scaffolding is now gone; the project runs on its own docs. From
+here, follow the ongoing rules in `CLAUDE.md` § Planning hygiene.

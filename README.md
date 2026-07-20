@@ -10,6 +10,29 @@ knowledge-catalog format (that's the `context/` bundle) and adds a
 planning/decisions/working-hygiene layer around it. It is **not** an official OKF
 artifact — OKF is one of the four parts.
 
+## Quick Start
+
+**1. Make your own copy.** On this repo's GitHub page, click **"Use this
+template" → Create a new repository** (or
+`gh repo create my-project --template <owner>/okf-project-template --private`).
+Then clone your new repo locally.
+
+**2. Customize it — let an agent walk you through it (recommended).** Open the new
+project in your coding agent (e.g. Claude Code) and paste this:
+
+> I just created this project from **okf-project-template** and it still has the
+> template's placeholders. Please run the setup dialog in `SETUP.md`: ask me what
+> you need to know, fill in the project's docs (name, scope, preferences, first
+> tasks), and remove the example/placeholder content when we're done.
+
+The agent runs a short Q&A, fills in the docs, deletes the example artifacts, and
+removes the onboarding scaffolding — leaving a clean, customized project. Prefer
+to do it by hand? Follow [Manual setup](#manual-setup) below instead.
+
+**3. Start working.** Your project now has a knowledge bundle (`context/`), a
+decision register (ADRs), a living plan (`planning/`), and agent working rules
+(`CLAUDE.md`) — all wired together.
+
 ## The doc taxonomy
 
 Four top-level doc directories, each with one job:
@@ -24,7 +47,10 @@ Four top-level doc directories, each with one job:
 Plus [`CLAUDE.md`](CLAUDE.md) at the root — the *how-to-work* instructions an
 agent auto-loads: the doc roles above and the planning-hygiene rules below.
 
-## Setup — adopting this template
+## Manual setup
+
+The by-hand alternative to the agent dialog (Quick Start step 2) — the same
+result, done yourself:
 
 1. Copy/clone this tree into your new project (or use it as a GitHub template).
 2. Fill in [`CLAUDE.md`](CLAUDE.md): the project description (top) and the
@@ -71,6 +97,7 @@ decisions) and the future (open/candidate work).
 
 ```
 CLAUDE.md              how-to-work instructions (agent auto-loads)
+SETUP.md               one-time setup dialog (agent-run; self-deletes after)
 context/               agent-owned OKF knowledge bundle
   index.md             bundle catalog (read first)
   CONVENTIONS.md       frontmatter, types, ADR format, ingest/query/lint

@@ -8,9 +8,17 @@ One-line description of the project goes here.
 
 > **This repo uses an OKF-based agent documentation workflow.** The sections
 > below tell an agent *how to work* here — where knowledge, decisions, and the
-> plan live, and the rules that keep those docs from rotting. To adopt: fill in
-> the heading above and **Project preferences** below, then delete the example
-> artifacts (the `SETUP` checklist is in [`README.md`](README.md)).
+> plan live, and the rules that keep those docs from rotting.
+
+## First run — set up this project
+
+If this copy still has template placeholders (`<PROJECT>`, `[EXAMPLE]` artifacts,
+an unfilled **Project preferences** section), it hasn't been customized yet. On
+your first interaction, **proactively offer to run the setup dialog** in
+[`SETUP.md`](SETUP.md) — a short Q&A that fills in the project's identity,
+preferences, and plan and removes the examples. If the user would rather set it
+up by hand, point them to [`README.md`](README.md) § Manual setup. When setup is
+complete, `SETUP.md` has you delete it and this section (it's one-time only).
 
 ## Agent knowledge base
 
