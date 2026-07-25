@@ -33,6 +33,21 @@ v0.1 bundle.
 - For the live plan and status, read [`planning/PROGRESS.md`](planning/PROGRESS.md)
   and [`planning/ROADMAP.md`](planning/ROADMAP.md).
 
+## Before every commit checklist
+
+When you implement a significant change (new feature, phase start, decision):
+
+1. ✅ Code changes staged
+2. ✅ `context/log.md` updated (append dated entry)
+3. ✅ `planning/PROGRESS.md` updated (Now/In-progress/Next reflect current state)
+4. ✅ If decision made: ADR written, `context/decisions/index.md` updated
+
+**Never commit code without updating the docs that describe it.** If you're about
+to commit and haven't touched `log.md` or `PROGRESS.md`, stop and update them first.
+
+What goes in each doc — and the rules behind this checklist — is **Planning
+hygiene** below.
+
 ## Planning hygiene
 
 Each doc has one job — keep them from re-narrating each other. **The *why* behind
@@ -65,7 +80,9 @@ So:
   rationale), and refresh PROGRESS's present state. Touch ROADMAP only if it
   opens/closes an *open* fork or shifts a phase.
 - **On implementing a significant change**: append a `log.md` entry (the detail)
-  and refresh PROGRESS's present state — a thin pointer, not a history.
+  and refresh PROGRESS's present state — a thin pointer, not a history. **DO THIS
+  IN THE SAME COMMIT** as the implementation. Never commit code without updating
+  both docs.
 - **Closing scrubs the future**: when you resolve a fork or complete a
   candidate / "Next" item, *delete its forward-looking mentions* (ROADMAP
   candidates, PROGRESS "Next") — not just the present-state bullet you're editing.

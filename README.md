@@ -55,19 +55,38 @@ result, done yourself:
 1. Copy/clone this tree into your new project (or use it as a GitHub template).
 2. Fill in [`CLAUDE.md`](CLAUDE.md): the project description (top) and the
    **Project preferences** section (commit policy, repo layout, build/test/run).
-3. Set the real `timestamp` in `context/CONVENTIONS.md` frontmatter; trim the
+3. **Rewrite this `README.md` as your project's own** — replace the template's
+   title/intro and the **adoption sections** (Quick Start, this Manual setup
+   section, the template's Structure block) with content about your project. Keep
+   "The doc taxonomy" / "Why these rules" if useful for your contributors (or move
+   them to `docs/`). Keep Quick Start only if you want others to re-template from
+   your repo.
+4. Set the real `timestamp` in `context/CONVENTIONS.md` frontmatter; trim the
    `type` vocabulary to your domain.
-4. Delete (or replace) the **example artifacts**, each marked with an
+5. Delete (or replace) the **example artifacts**, each marked with an
    `[EXAMPLE — replace or delete]` note:
    - `context/decisions/0001-example-decision.md` (a worked ADR)
    - the example entry in `context/log.md`
    - the example rows/sections in `context/index.md`,
      `context/decisions/index.md`, `planning/ROADMAP.md`, `planning/PROGRESS.md`
-5. Start working. On the first real decision, write ADR `0001`.
+6. Decide on [`LICENSE`](LICENSE): the template ships **0BSD** (permissive, no
+   attribution). Keep it for your project or swap in your own — and update the
+   README license line (step 3) to match, so the two can't contradict each other.
+7. Start working. On the first real decision, write ADR `0001`.
 
 To find every spot that needs your attention (and confirm you got them all when
 done), grep for the markers:
 `grep -rnE '<PROJECT>|<[a-z][^>]*>|\[EXAMPLE|<!--' --include='*.md' .`
+
+**That grep will not catch `README.md`.** This file has none of those markers, so
+a README you skipped in step 3 passes it clean — leaving your project describing
+*the template*, with a dead `SETUP.md` link and a possibly contradictory license
+line. Check it separately:
+
+```
+head -1 README.md                                      # not "# okf-project-template"
+grep -nE 'Use this template|SETUP\.md|Manual setup|0BSD' README.md
+```
 
 **Optional CI:** a GitHub Action that fails on broken internal doc links ships
 **disabled**. Enable it any time with
@@ -84,6 +103,12 @@ earned its place by a failure mode:
 - **History → `log.md`, present-state → `PROGRESS.md`.** A curated knowledge base
   must not carry volatile session history, and a status doc must not accrete a
   "Done" pile. Keeping them separate keeps each trustworthy.
+- **Docs land in the *same commit* as the code.** A doc updated "later" is a doc
+  that is wrong in between — and agents, reviewers, and your future self all read
+  the repo *at a commit*, not at "later". Deferring also means reconstructing what
+  changed from memory, so the entry arrives thin or never arrives at all. So the
+  commit that changes behaviour carries its own `log.md` + `PROGRESS.md` update;
+  the checklist at the top of `CLAUDE.md` is the gate that enforces it.
 - **No live tallies.** A count ("19 tests", "forks 1–15") is wrong the moment the
   next change lands, and nobody remembers to update prose numbers. Describe the
   *state* ("all tests green", "none open — see the register"); a number is only

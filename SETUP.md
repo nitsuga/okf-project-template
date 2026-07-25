@@ -88,6 +88,17 @@ When setup is complete:
   grep -rnE '<PROJECT>|\[EXAMPLE|<!--' --include='*.md' .
   ```
 
+- **Check `README.md` separately — the grep above will not catch it.** The
+  template's README has no `<PROJECT>` or `[EXAMPLE]` markers, so one you never
+  rewrote (step 2) passes that grep clean, leaving the project's README
+  describing *the template*: wrong title, a dead `SETUP.md` link, and a license
+  line that may contradict `LICENSE`. Confirm by hand:
+
+  ```
+  head -1 README.md                                      # not "# okf-project-template"
+  grep -nE 'Use this template|SETUP\.md|Manual setup|0BSD' README.md   # adoption leftovers
+  ```
+
 - Commit it all (e.g. "Set up <project> from okf-project-template").
 
 The onboarding scaffolding is now gone; the project runs on its own docs. From
