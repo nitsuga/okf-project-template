@@ -42,14 +42,17 @@ or strip.
 
 - `CLAUDE.md` — the `# <PROJECT>` heading + description; the **Project
   preferences** section (commit policy, repo layout, build/test/run, constraints).
-- `README.md` — this becomes *their project's* README: replace the template's
-  title/intro and the **adoption sections** (Quick Start, Manual setup, the
-  template's own Structure block) with content about their project. Keep "The doc
-  taxonomy" / "Why these rules" if useful for their contributors (or move them to
-  `docs/`). Keep the Quick Start only if they want others to re-template from
-  their repo.
-- `context/CONVENTIONS.md` — set the real `timestamp`; trim/rename the type
-  vocabulary to their domain.
+- `README.md` — this becomes *their project's* README, and it is **human-facing**:
+  what the project is, how to build/run it, how it's laid out, its license.
+  Delete *all* of the template's pitch and adoption sections — title/intro, Quick
+  Start, Manual setup, "The doc taxonomy", "Why these rules", and the template's
+  own Structure block. Do **not** carry the workflow directives across: they live
+  where agents read them (`CLAUDE.md`, `context/workflow-rationale.md`,
+  `context/CONVENTIONS.md` § Layout), and a second copy in the README is the
+  duplication these rules exist to prevent. Keep the Quick Start only if they want
+  others to re-template from their repo.
+- `context/CONVENTIONS.md` and `context/workflow-rationale.md` — set the real
+  `timestamp` in each; trim/rename the type vocabulary to their domain.
 - `context/index.md` — the `# <PROJECT>` title.
 - `planning/ROADMAP.md` — Scope + Phases from their answers.
 - `planning/PROGRESS.md` — the `# <PROJECT>` title, "Now", and the first "Next"
@@ -97,6 +100,7 @@ When setup is complete:
   ```
   head -1 README.md                                      # not "# okf-project-template"
   grep -nE 'Use this template|SETUP\.md|Manual setup|0BSD' README.md   # adoption leftovers
+  grep -nE 'doc taxonomy|Why these rules' README.md      # directives that belong in context/
   ```
 
 - Commit it all (e.g. "Set up <project> from okf-project-template").

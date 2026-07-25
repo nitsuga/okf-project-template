@@ -45,7 +45,15 @@ Four top-level doc directories, each with one job:
 | `docs/` | **Human-facing** authored guides (terse). | humans |
 
 Plus [`CLAUDE.md`](CLAUDE.md) at the root — the *how-to-work* instructions an
-agent auto-loads: the doc roles above and the planning-hygiene rules below.
+agent auto-loads: the doc roles above, a pre-commit checklist, and the
+planning-hygiene rules that keep the four from re-narrating each other. The
+reasoning behind those rules — the failure mode each one prevents — is in
+[`context/workflow-rationale.md`](context/workflow-rationale.md).
+
+> **This section is the template's pitch, not project content.** Setup deletes it
+> along with Quick Start and Manual setup: a set-up project's `README.md` is
+> human-facing (what it is, how to build it, how it's laid out), and the workflow
+> directives live where agents read them — `CLAUDE.md` and `context/`.
 
 ## Manual setup
 
@@ -55,14 +63,17 @@ result, done yourself:
 1. Copy/clone this tree into your new project (or use it as a GitHub template).
 2. Fill in [`CLAUDE.md`](CLAUDE.md): the project description (top) and the
    **Project preferences** section (commit policy, repo layout, build/test/run).
-3. **Rewrite this `README.md` as your project's own** — replace the template's
-   title/intro and the **adoption sections** (Quick Start, this Manual setup
-   section, the template's Structure block) with content about your project. Keep
-   "The doc taxonomy" / "Why these rules" if useful for your contributors (or move
-   them to `docs/`). Keep Quick Start only if you want others to re-template from
-   your repo.
-4. Set the real `timestamp` in `context/CONVENTIONS.md` frontmatter; trim the
-   `type` vocabulary to your domain.
+3. **Rewrite this `README.md` as your project's own** — it should end up
+   **human-facing**: what the project is, how to build and run it, how it's laid
+   out, its license. Delete *all* of the template's pitch and adoption sections —
+   title/intro, Quick Start, this Manual setup section, "The doc taxonomy", "Why
+   these rules", and the template's Structure block. Don't carry the workflow
+   directives into your README: they already live where agents read them
+   (`CLAUDE.md` and [`context/`](context/workflow-rationale.md)), and a second
+   copy in the README is exactly the duplication these rules exist to prevent.
+   Keep Quick Start only if you want others to re-template from your repo.
+4. Set the real `timestamp` in the frontmatter of `context/CONVENTIONS.md` and
+   `context/workflow-rationale.md`; trim the `type` vocabulary to your domain.
 5. Delete (or replace) the **example artifacts**, each marked with an
    `[EXAMPLE — replace or delete]` note:
    - `context/decisions/0001-example-decision.md` (a worked ADR)
@@ -94,37 +105,17 @@ grep -nE 'Use this template|SETUP\.md|Manual setup|0BSD' README.md
 
 ## Why these rules
 
-The hygiene rules in `CLAUDE.md` look fussy until you've watched docs rot. Each
-earned its place by a failure mode:
+The hygiene rules look fussy until you've watched docs rot. Each earned its place
+by a failure mode: two docs narrating the same thing until one drifts; a status
+doc accreting a "Done" pile; a prose tally ("19 tests", "forks 1–15") wrong the
+moment the next change lands; a resolved item still listed under "Next"
+somewhere; a doc updated "later" and therefore wrong in between. The meta-lesson:
+**duplication rots — in both tenses.**
 
-- **One job per doc.** When two docs narrate the same thing, one copy drifts and
-  you can't tell which is right. So: history lives only in `log.md`, the decided
-  register only in `decisions/index.md`, present state only in `PROGRESS.md`.
-- **History → `log.md`, present-state → `PROGRESS.md`.** A curated knowledge base
-  must not carry volatile session history, and a status doc must not accrete a
-  "Done" pile. Keeping them separate keeps each trustworthy.
-- **Docs land in the *same commit* as the code.** A doc updated "later" is a doc
-  that is wrong in between — and agents, reviewers, and your future self all read
-  the repo *at a commit*, not at "later". Deferring also means reconstructing what
-  changed from memory, so the entry arrives thin or never arrives at all. So the
-  commit that changes behaviour carries its own `log.md` + `PROGRESS.md` update;
-  the checklist at the top of `CLAUDE.md` is the gate that enforces it.
-- **No live tallies.** A count ("19 tests", "forks 1–15") is wrong the moment the
-  next change lands, and nobody remembers to update prose numbers. Describe the
-  *state* ("all tests green", "none open — see the register"); a number is only
-  ever a frozen snapshot in a dated `log.md` line.
-- **Closing scrubs the future / one home for open work.** Forward-looking content
-  drifts exactly like history: resolve an item but leave it listed under "Next" /
-  "candidate" elsewhere, and the docs now lie. So a candidate lives in *one* place
-  (ROADMAP's backlog), and resolving it means deleting its forward-looking
-  mentions too — not just updating the present-state bullet.
-- **Lint is the backstop.** Nothing fires it automatically, so run it periodically
-  (closing a fork, before a release). But the real lever is reducing what *can*
-  drift (the rules above), so the lint has little to catch.
-
-The meta-lesson: **duplication rots — in both tenses.** Most of these rules are
-one idea (don't say the same thing in two places) applied to the past (history,
-decisions) and the future (open/candidate work).
+The rule-by-rule reasoning lives with the rules, in
+[`context/workflow-rationale.md`](context/workflow-rationale.md) — read by an
+agent before relaxing one, and carried into every project made from this
+template.
 
 ## Structure
 
@@ -136,6 +127,7 @@ SETUP.md               one-time setup dialog (agent-run; self-deletes after)
 context/               agent-owned OKF knowledge bundle
   index.md             bundle catalog (read first)
   CONVENTIONS.md       frontmatter, types, ADR format, ingest/query/lint
+  workflow-rationale.md  why each planning-hygiene rule exists
   log.md               durable chronological record
   decisions/
     index.md           decided register: fork ↔ ADR ↔ status
