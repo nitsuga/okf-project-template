@@ -14,10 +14,11 @@ decide", and skip anything they don't care about yet.
 **Find every fill-in** first:
 
 ```
-grep -rnE '<PROJECT>|<[a-z][^>]*>|\[EXAMPLE|<!--' --include='*.md' .
+grep -rnE '<PROJECT>|<[a-z][^>]*>|\[EXAMPLE|<!--|2000-01-01' --include='*.md' .
 ```
 
-That surfaces the placeholders (`<PROJECT>`, `<…>`), example artifacts
+That surfaces the placeholders (`<PROJECT>`, `<…>` — including `by: <actor>`),
+the sentinel date in `generated.at` (`2000-01-01T00:00:00Z`), example artifacts
 (`[EXAMPLE]`), and setup guidance comments (`<!-- … -->`) — everything to replace
 or strip.
 
@@ -52,7 +53,9 @@ or strip.
   duplication these rules exist to prevent. Keep the Quick Start only if they want
   others to re-template from their repo.
 - `context/CONVENTIONS.md` and `context/workflow-rationale.md` — set the real
-  `timestamp` in each; trim/rename the type vocabulary to their domain.
+  `generated:` (`by:` an actor — `human:<id>`, `<producer>/<version>`, or
+  `process:<id>` — and `at:` an ISO 8601 timestamp) in each; trim/rename the type
+  vocabulary to their domain.
 - `context/index.md` — the `# <PROJECT>` title.
 - `planning/ROADMAP.md` — Scope + Phases from their answers.
 - `planning/PROGRESS.md` — the `# <PROJECT>` title, "Now", and the first "Next"
@@ -88,7 +91,7 @@ When setup is complete:
 - **Verify nothing's left** — with this file gone, this should return nothing:
 
   ```
-  grep -rnE '<PROJECT>|\[EXAMPLE|<!--' --include='*.md' .
+  grep -rnE '<PROJECT>|\[EXAMPLE|<!--|2000-01-01|<actor>' --include='*.md' .
   ```
 
 - **Check `README.md` separately — the grep above will not catch it.** The

@@ -1,9 +1,14 @@
 ---
 type: Decision
 title: Adopt the OKF-based documentation workflow
-status: accepted
+decision_status: accepted
 tags: [decision, meta, docs]
-timestamp: 2000-01-01T00:00:00Z
+generated:
+  by: <actor>
+  at: 2000-01-01T00:00:00Z
+sources:
+  - resource: https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md
+    title: Open Knowledge Format (OKF) v0.2 specification
 fork: 1
 ---
 
@@ -41,14 +46,21 @@ item scrubs its forward-looking mentions).
 - Knowledge, decisions, and plan each have one home; an agent knows where to read
   and write.
 - Some upfront discipline (write the ADR, update the register + log + PROGRESS).
-- The rules must be understood, not just followed — see `README.md` § "Why these
-  rules".
+- The rules must be understood, not just followed — see
+  [`workflow-rationale`](../workflow-rationale.md).
 
 # Assumptions / open questions
 
-- Targets OKF v0.1; revisit on a new OKF version.
+- Targets OKF v0.2; revisit on a new OKF version. The v0.1→v0.2 bump cost two
+  field renames (`timestamp` → `generated`, body `# Citations` → `sources`), so
+  a future bump is expected to be cheap but not free.
 
 # Citations
 
-[1] `README.md` — the template's rationale and setup.
-[2] OKF spec — the `context/` bundle format.
+- OKF v0.2 spec (frontmatter above) — the `context/` bundle format: the required
+  `type` key, the reserved `index.md` / `log.md`, and the trust families this
+  bundle uses sparingly.
+- [[CONVENTIONS]] § Decisions — why the ADR state field is `decision_status`
+  rather than `status` (v0.2 claims `status` for document lifecycle).
+- [[workflow-rationale]] — the failure mode behind each planning-hygiene rule
+  this workflow imposes.

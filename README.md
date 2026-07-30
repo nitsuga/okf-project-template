@@ -72,8 +72,9 @@ result, done yourself:
    (`CLAUDE.md` and [`context/`](context/workflow-rationale.md)), and a second
    copy in the README is exactly the duplication these rules exist to prevent.
    Keep Quick Start only if you want others to re-template from your repo.
-4. Set the real `timestamp` in the frontmatter of `context/CONVENTIONS.md` and
-   `context/workflow-rationale.md`; trim the `type` vocabulary to your domain.
+4. Set the real `generated:` (`by:` an actor, `at:` an ISO 8601 timestamp) in the
+   frontmatter of `context/CONVENTIONS.md` and `context/workflow-rationale.md`;
+   trim the `type` vocabulary to your domain.
 5. Delete (or replace) the **example artifacts**, each marked with an
    `[EXAMPLE — replace or delete]` note:
    - `context/decisions/0001-example-decision.md` (a worked ADR)
@@ -87,7 +88,7 @@ result, done yourself:
 
 To find every spot that needs your attention (and confirm you got them all when
 done), grep for the markers:
-`grep -rnE '<PROJECT>|<[a-z][^>]*>|\[EXAMPLE|<!--' --include='*.md' .`
+`grep -rnE '<PROJECT>|<[a-z][^>]*>|\[EXAMPLE|<!--|2000-01-01' --include='*.md' .`
 
 **That grep will not catch `README.md`.** This file has none of those markers, so
 a README you skipped in step 3 passes it clean — leaving your project describing

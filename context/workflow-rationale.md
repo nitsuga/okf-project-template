@@ -3,7 +3,9 @@ type: Conventions
 title: Why these rules
 description: The failure mode behind each planning-hygiene rule in CLAUDE.md.
 tags: [meta, conventions, hygiene]
-timestamp: 2000-01-01T00:00:00Z
+generated:
+  by: <actor>
+  at: 2000-01-01T00:00:00Z
 ---
 
 # Why these rules

@@ -24,7 +24,7 @@ complete, `SETUP.md` has you delete it and this section (it's one-time only).
 
 The project's working knowledge lives in `context/` as an
 [OKF](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md)
-v0.1 bundle.
+v0.2 bundle.
 
 - Read [`context/index.md`](context/index.md) first — the bundle catalog.
 - [`context/CONVENTIONS.md`](context/CONVENTIONS.md) — frontmatter, type
@@ -75,8 +75,8 @@ So:
 
 - **On a significant decision** (a fork resolved or changed): write/update the
   ADR in [`context/decisions/`](context/decisions/index.md) per the lifecycle in
-  [`context/CONVENTIONS.md`](context/CONVENTIONS.md) (status: proposed →
-  accepted / superseded / deferred), add/update its row in the decided register,
+  [`context/CONVENTIONS.md`](context/CONVENTIONS.md) (`decision_status`: proposed
+  → accepted / superseded / deferred), add/update its row in the decided register,
   append **one thin** `log.md` line (chronology + link — the ADR owns the
   rationale), and refresh PROGRESS's present state. Touch ROADMAP only if it
   opens/closes an *open* fork or shifts a phase.
