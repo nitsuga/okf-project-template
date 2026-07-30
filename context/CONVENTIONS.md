@@ -120,9 +120,11 @@ forks to the register.
 
 Record the decision in [`log.md`](./log.md) as a **single thin line** —
 chronology + a link to the ADR. The ADR owns the rationale, so do **not** restate
-the decision or its alternatives in the log (that puts the same content in three
-places). Add a second log line for a fork only on a genuine cross-session gap or
-a revision / supersede.
+the decision or its rejected alternatives in the log (that puts the same content
+in three places). Add a *second* log line for one fork only on a genuine
+cross-session gap (proposed in one session, accepted in a later one) or a
+revision / supersede — **not** for a same-session propose→accept, which is one
+event and gets one line.
 
 ## ADR format
 
@@ -156,6 +158,14 @@ Keep the annotation. A bare `resource:` list records that a source was consulted
 the prose records what it decided — and that reasoning is the reason to keep an
 ADR at all. Purely internal cross-references (other concepts, other ADRs) need no
 `sources` entry; the body link is enough.
+
+**Cite by stable anchor, not by position.** Name the section, clause, or heading
+(`ST 0601 §6.3`, `SPEC.md § Conformance`) — never a line or page number of a
+derived extract. Extracts get regenerated and revisions shift their numbering, so
+a positional citation silently comes to point at the wrong text, which is worse
+than a broken one: it still resolves, and it still looks right. Where a source in
+`../references/` has a text extract beside it for grep/Read, that extract is a
+reading aid, not a citable address — cite the source it came from.
 
 # Subdirectories
 

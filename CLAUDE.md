@@ -101,14 +101,20 @@ So:
 <!-- These are YOUR knobs, not part of the method. Set them to taste, then delete
      this comment. -->
 
-- **Commit messages**: <e.g. no `Co-Authored-By` trailer · Conventional Commits ·
-  ticket prefixes — your call>.
-- **Repo layout**: list your top-level dirs and what each holds, e.g.
+- **Commit messages**: <your convention>. E.g. Conventional Commits · ticket
+  prefixes · whether to use a `Co-Authored-By` trailer.
+- **Prose style**: <e.g. American English>, applied *everywhere prose appears*:
+  code comments, doc strings, CLI help and error text, test messages, Markdown,
+  commit messages. Name the **exempt** directories — a style rule that doesn't
+  name them reads as license to "fix" immutable inputs and vendored code.
+- **Repo layout**: list your top-level dirs and what each holds, and mark the
+  ones an agent must not write to, e.g.
   - `references/` — immutable source-of-truth inputs. Read, never modify.
   - `context/` — agent knowledge bundle (maintain this).
   - `docs/` — human-facing guides (terse).
   - `planning/` — live plan + progress. Read first for "what now".
+  - `<external/ · vendor/>` — <vendored third-party code, if any. Read, never
+    restyle or reformat.>
   - `<src/ · assets/ · …>` — <your code / assets>.
 - **Build / test / run**: <how to build, test, and run this project>.
-- **Anything else an agent must know**: <domain constraints, coding style, review
-  expectations, …>.
+- **Anything else an agent must know**: <domain constraints, review expectations>.

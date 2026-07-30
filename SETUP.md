@@ -27,8 +27,11 @@ or strip.
 - **Identity** — What's the project called, and a one-line description of what it
   is? Its scope (what's in, and anything explicitly out)?
 - **Preferences** — Commit-message convention? The main code/asset directories
-  and what each holds? How do you build / test / run it? Any coding style or
-  constraints an agent must respect?
+  and what each holds — and which an agent must never write to (immutable
+  inputs, vendored third-party code)? A prose-style convention (e.g. American
+  English) covering comments, CLI text, and Markdown, and the directories it
+  exempts? How do you build / test / run it? Any coding style or constraints an
+  agent must respect?
 - **Domain types** *(optional)* — Beyond the starter concept types (`Reference`,
   `Concept`, `Component`, `Decision`), any domain-specific type to add or rename
   (e.g. `Dataset`, `Standard Reference`)? Fine to skip and add later.
