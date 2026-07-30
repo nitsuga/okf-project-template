@@ -149,8 +149,8 @@ have a job, because they carry different things:
   a file under `../references/`, a spec URL. One entry per input, `resource`
   required. This is what a consumer reads first.
 - **`# Citations` (body)** — the annotated bibliography: each entry says *why
-  that source mattered to this doc*. Wiki-links to sibling concepts and ADRs
-  (`[[concept-name]] § Section — what it supplied`) live here.
+  that source mattered to this doc*. Links to sibling concepts and ADRs
+  (`[Title](./concept.md) § Section — what it supplied`) live here.
 
 Keep the annotation. A bare `resource:` list records that a source was consulted;
 the prose records what it decided — and that reasoning is the reason to keep an
@@ -167,8 +167,26 @@ immediately).
 
 # Linking
 
-Prefer bundle-relative links resolved from `context/`: `[Title](/concept.md)` or
-`[Title](./concept.md)`. Relationship semantics — references, nests-in, depends-on — live in the
+**Sibling-relative markdown, always**: `[Title](./concept.md)` within the bundle,
+`../planning/…` / `../references/…` for targets outside it. One form, and it
+resolves for all three readers — a person on GitHub, an editor, and an agent
+following paths.
+
+**Never root-absolute** (`](/concept.md)`). OKF v0.2 *recommends* this form
+because it survives file moves, but that only holds for a consumer resolving
+paths against the bundle root; GitHub, editors, and path-following agents all
+resolve against the *site* root, where it points nowhere. The spec also lists
+relative links as supported, so sibling-relative is fully conformant — this is a
+choice between two allowed forms, not a divergence from the spec. Guard the move
+-survival you give up with the link-check CI (see `README.md`), not with the
+absolute form.
+
+`[[slug]]` wikilinks resolve by name rather than path, so they too survive moves
+— but GitHub renders them as literal text, and the link-check CI cannot see them
+(it matches `](path)`). Not the house style here; an unverifiable link is the
+thing this section exists to prevent.
+
+Relationship semantics — references, nests-in, depends-on — live in the
 surrounding prose; the link itself is untyped. Broken links are not errors; they
 may be not-yet-written knowledge.
 

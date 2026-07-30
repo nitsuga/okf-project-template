@@ -60,7 +60,8 @@ item scrubs its forward-looking mentions).
 - OKF v0.2 spec (frontmatter above) — the `context/` bundle format: the required
   `type` key, the reserved `index.md` / `log.md`, and the trust families this
   bundle uses sparingly.
-- [[CONVENTIONS]] § Decisions — why the ADR state field is `decision_status`
-  rather than `status` (v0.2 claims `status` for document lifecycle).
-- [[workflow-rationale]] — the failure mode behind each planning-hygiene rule
-  this workflow imposes.
+- [Conventions](../CONVENTIONS.md) § Decisions — why the ADR state field is
+  `decision_status` rather than `status` (v0.2 claims `status` for document
+  lifecycle).
+- [Why these rules](../workflow-rationale.md) — the failure mode behind each
+  planning-hygiene rule this workflow imposes.

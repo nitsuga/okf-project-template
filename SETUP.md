@@ -35,7 +35,7 @@ or strip.
 - **Starting point** — What's the first phase or two, and the first 1–3 tasks?
   Any external sources/specs to pull into `references/` up front?
 - **Optional CI** — a dormant GitHub Action that fails on broken internal doc
-  links ships disabled. Offer to enable it; if yes:
+  links (and on root-absolute ones) ships disabled. Offer to enable it; if yes:
   `git mv .github/workflows/link-check.yml.disabled .github/workflows/link-check.yml`
   (otherwise leave it — it never runs while disabled).
 

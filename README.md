@@ -100,8 +100,9 @@ head -1 README.md                                      # not "# okf-project-temp
 grep -nE 'Use this template|SETUP\.md|Manual setup|0BSD' README.md
 ```
 
-**Optional CI:** a GitHub Action that fails on broken internal doc links ships
-**disabled**. Enable it any time with
+**Optional CI:** a GitHub Action that fails on broken internal doc links — and on
+root-absolute ones, which resolve nowhere (see `context/CONVENTIONS.md`
+§ Linking) — ships **disabled**. Enable it any time with
 `git mv .github/workflows/link-check.yml.disabled .github/workflows/link-check.yml`.
 
 ## Why these rules
