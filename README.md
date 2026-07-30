@@ -111,8 +111,9 @@ The hygiene rules look fussy until you've watched docs rot. Each earned its plac
 by a failure mode: two docs narrating the same thing until one drifts; a status
 doc accreting a "Done" pile; a prose tally ("19 tests", "forks 1–15") wrong the
 moment the next change lands; a resolved item still listed under "Next"
-somewhere; a doc updated "later" and therefore wrong in between. The meta-lesson:
-**duplication rots — in both tenses.**
+somewhere; a status doc swelling into a feature inventory that re-narrates the
+knowledge base; a doc updated "later" and therefore wrong in between. The
+meta-lesson: **duplication rots — in every tense.**
 
 The rule-by-rule reasoning lives with the rules, in
 [`context/workflow-rationale.md`](context/workflow-rationale.md) — read by an

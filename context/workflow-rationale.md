@@ -12,7 +12,8 @@ generated:
 
 The hygiene rules in [`../CLAUDE.md`](../CLAUDE.md) § Planning hygiene look fussy
 until you've watched docs rot. **Read this before relaxing one** — each earned its
-place by a failure mode:
+place by a failure mode, and the ones marked *observed* were paid for in a real
+project built from this template, not imagined:
 
 - **One job per doc.** When two docs narrate the same thing, one copy drifts and
   you can't tell which is right. So: history lives only in `log.md`, the decided
@@ -32,16 +33,37 @@ place by a failure mode:
   ever a frozen snapshot in a dated `log.md` line.
 - **Closing scrubs the future / one home for open work.** Forward-looking content
   drifts exactly like history: resolve an item but leave it listed under "Next" /
-  "candidate" elsewhere, and the docs now lie. So a candidate lives in *one* place
-  (ROADMAP's backlog), and resolving it means deleting its forward-looking
-  mentions too — not just updating the present-state bullet.
+  "candidate" elsewhere, and the docs now lie. *Observed*: ROADMAP and PROGRESS
+  both carried candidate lists, so resolved forks survived in whichever copy
+  nobody happened to be editing. So a candidate lives in *one* place (ROADMAP's
+  backlog), and resolving it means deleting its forward-looking mentions too —
+  not just updating the present-state bullet.
+- **"Now" is where the *work* is, not what the system *does*.** Present state
+  attracts capability description — "the parser handles X, the backend supports
+  Y" — because that is true right now. But it is durable knowledge, owned by a
+  `context/` concept or an ADR, and PROGRESS re-narrating it is the same
+  duplication in a costume. *Observed*: in both projects built from this
+  template, "Now" grew past 75 lines of feature inventory, each block restating
+  an ADR it also linked. It grows without bound because nothing ever prompts you
+  to *delete* a capability — unlike a task, which closing removes. The test is in
+  `PROGRESS.md`: if a sentence would still be true after a month of no work, it
+  is knowledge, not status.
 - **Lint is the backstop.** Nothing fires it automatically, so run it periodically
   (closing a fork, before a release). But the real lever is reducing what *can*
   drift (the rules above), so the lint has little to catch.
 
-The meta-lesson: **duplication rots — in both tenses.** Most of these rules are
+The meta-lesson: **duplication rots — in every tense.** Most of these rules are
 one idea (don't say the same thing in two places) applied to the past (history,
-decisions) and the future (open/candidate work).
+decisions), the future (open/candidate work), and the timeless (what the system
+does — knowledge, not status).
+
+**Add your own scars.** When one of these rules fails *here* — you find the
+stale claim, the orphaned "Next", the tally nobody updated — append a one-line
+*observed* origin to the matching bullet, naming what actually drifted. A rule
+carrying a concrete incident survives the first time it is inconvenient; a rule
+that reads as general principle gets deleted. This is the one place in the
+workflow where accumulating history is correct: these are the reasons, not the
+chronology, so they belong here rather than in [`log.md`](./log.md).
 
 This file is the single home for that rationale. It lives in `context/` — not the
 top-level `README.md` — so the project's README stays human-facing: what the

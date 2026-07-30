@@ -64,7 +64,9 @@ inconvenient.**
 - [`planning/PROGRESS.md`](planning/PROGRESS.md) — **present state only**
   (Now / In-progress / Next). Volatile; rewrite freely. No "Done" history here
   (that's `log.md`). "Next" is the 1–3 *immediate* actions and points to ROADMAP
-  for the candidate backlog — it doesn't re-list it.
+  for the candidate backlog — it doesn't re-list it. "Now" is where the *work*
+  is, **not a feature inventory**: if a sentence would still be true after a
+  month of no work, it's durable knowledge — put it in `context/` and link it.
 - [`planning/ROADMAP.md`](planning/ROADMAP.md) — scope, phases, and the **single
   backlog** of open + candidate *forks* (a **fork** = a decision point that needs
   a choice — a fork in the road, not a git fork; see CONVENTIONS § Decisions).

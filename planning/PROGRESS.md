@@ -8,7 +8,17 @@ chronological history (what landed when, decision detail) lives in
 
 ## Now
 
-<!-- 1–3 lines on where the project actually is right now. -->
+<!-- Where the WORK is: the current phase, what just landed, what's blocking.
+     A few lines.
+
+     NOT what the system does. "The parser handles X, the backend supports Y" is
+     durable knowledge — it belongs in a `context/` concept or an ADR, and a
+     pointer belongs here. The test: if a sentence would still be true after a
+     month of no work on this project, it is knowledge, not status. Move it and
+     link it.
+
+     That test is the guard on this section's size. Tasks leave when they close;
+     capabilities never do, so a "Now" that collects them only grows. -->
 
 Project scaffolded from `okf-project-template`. Fill in `CLAUDE.md` and start.
 
