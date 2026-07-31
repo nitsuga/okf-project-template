@@ -27,7 +27,7 @@ nobody can find gets relitigated from scratch.
 
 | Path | Role |
 |------|------|
-| `../references/` | Immutable raw sources. Agent reads, never modifies. |
+| `../references/` | Raw sources, append-only. Agent reads, and deposits new snapshots on a directed ingest; never edits one that's there. |
 | `context/` | This bundle. Agent-owned synthesis. |
 | `../docs/` | Human-facing authored guides (terse). Not agent-maintained. |
 | `../planning/` | Project management (ROADMAP, PROGRESS). Transient; human + agent read/write. Not OKF concepts. |
@@ -223,8 +223,15 @@ link-check CI verifies both forms, so neither is the unchecked one — and say
 which you chose in this section, so the next agent doesn't mix them by accident.
 
 Relationship semantics — references, nests-in, depends-on — live in the
-surrounding prose; the link itself is untyped. Broken links are not errors; they
-may be not-yet-written knowledge.
+surrounding prose; the link itself is untyped.
+
+**Broken links are errors here.** OKF *consumers* must tolerate them — a dangling
+link may be not-yet-written knowledge — but that is a robustness rule for readers,
+not licence for this bundle to ship them. The link-check CI fails on one, and that
+guarantee is the whole reason sibling-relative links can replace the move-survival
+of the root-absolute form (above). When a concept isn't written yet, **name it in
+prose without linking**, or write the stub; the lint's "concepts mentioned but not
+written" pass (§ Operations) is what turns those into links later.
 
 # Reserved files
 
@@ -253,5 +260,13 @@ it periodically (e.g. when closing a fork, or before a release).
 
 # Source discipline
 
-Never edit files in `../references/`. The immutable sources are the ground truth;
-this bundle is the curated, cross-linked reading of them.
+`../references/` is **append-only**. Never edit, reformat, or delete a file that
+is already there — the immutable sources are the ground truth, and this bundle is
+the curated, cross-linked reading of them. Adding is different from editing: when
+the user directs an ingest, deposit the new source there as a faithful snapshot
+(§ Operations — Ingest), then leave it alone forever. "Immutable" governs each
+snapshot, not the directory's file count.
+
+Correcting a source you believe is wrong is *never* an edit there: the correction
+is knowledge, so it belongs in a `context/` concept that cites the original and
+says where it departs from it.

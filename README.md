@@ -39,7 +39,7 @@ Four top-level doc directories, each with one job:
 
 | Dir | Role | Audience |
 |-----|------|----------|
-| `references/` | **Immutable** source-of-truth inputs (specs, standards, prior art). Read, never modify. | inputs |
+| `references/` | Source-of-truth inputs (specs, standards, prior art), **append-only**: each snapshot is immutable; ingests add, never edit. | inputs |
 | `context/` | **Agent-owned** knowledge bundle (OKF): synthesized concepts + the decision register (ADRs). | agent |
 | `planning/` | **Volatile** plan + present state — `ROADMAP.md` (scope/phases/open forks) and `PROGRESS.md` (Now/Next). | both |
 | `docs/` | **Human-facing** authored guides (terse). | humans |
@@ -138,7 +138,7 @@ context/               agent-owned OKF knowledge bundle
 planning/
   ROADMAP.md           scope, phases, open + candidate forks
   PROGRESS.md          present state: Now / In-progress / Next
-references/            immutable inputs (read-only)
+references/            source inputs (append-only; snapshots immutable)
 docs/                  human-facing guides
 ```
 

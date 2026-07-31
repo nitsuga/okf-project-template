@@ -17,8 +17,12 @@ an unfilled **Project preferences** section), it hasn't been customized yet. On
 your first interaction, **proactively offer to run the setup dialog** in
 [`SETUP.md`](SETUP.md) — a short Q&A that fills in the project's identity,
 preferences, and plan and removes the examples. If the user would rather set it
-up by hand, point them to [`README.md`](README.md) § Manual setup. When setup is
-complete, `SETUP.md` has you delete it and this section (it's one-time only).
+up by hand, point them to [`README.md`](README.md) § Manual setup.
+
+Setup is one-time, and it isn't finished until [`SETUP.md`](SETUP.md) § 5's
+verification block runs clean — which includes deleting `SETUP.md` **and this
+section**. Those two deletions are the last steps and the easiest to skip; skip
+them and the next session re-offers setup on a project that's already set up.
 
 ## Agent knowledge base
 
@@ -29,7 +33,8 @@ v0.2 bundle.
 - Read [`context/index.md`](context/index.md) first — the bundle catalog.
 - [`context/CONVENTIONS.md`](context/CONVENTIONS.md) — frontmatter, type
   vocabulary, ingest/query/lint rules. Read before editing `context/`.
-- `context/` is agent-owned. `references/` is immutable — read, never modify.
+- `context/` is agent-owned. `references/` is append-only: read it, add a snapshot
+  on a directed ingest, never edit one that's already there.
 - For the live plan and status, read [`planning/PROGRESS.md`](planning/PROGRESS.md)
   and [`planning/ROADMAP.md`](planning/ROADMAP.md).
 
@@ -109,7 +114,8 @@ So:
   name them reads as license to "fix" immutable inputs and vendored code.
 - **Repo layout**: list your top-level dirs and what each holds, and mark the
   ones an agent must not write to, e.g.
-  - `references/` — immutable source-of-truth inputs. Read, never modify.
+  - `references/` — source-of-truth inputs, append-only. Read; add on a directed
+    ingest; never edit what's there.
   - `context/` — agent knowledge bundle (maintain this).
   - `docs/` — human-facing guides (terse).
   - `planning/` — live plan + progress. Read first for "what now".

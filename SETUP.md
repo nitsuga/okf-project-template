@@ -82,8 +82,9 @@ are setup hints, not project content.
 ## 4. Ingest any starting sources (optional)
 
 If they named specs/repos to ingest, follow `context/CONVENTIONS.md` § Operations
-(Ingest): read the source into `references/`, write a concept in `context/`, add
-an `index.md` entry, append a `log.md` line.
+(Ingest): deposit the source in `references/` as a faithful snapshot (that
+directory is append-only — adding is fine, editing what's there never is), write
+a concept in `context/`, add an `index.md` entry, append a `log.md` line.
 
 ## 5. Self-clean
 
@@ -91,17 +92,29 @@ When setup is complete:
 
 - **Delete this `SETUP.md`.**
 - **Delete the "First run — set up this project" section from `CLAUDE.md`.**
-- **Verify nothing's left** — with this file gone, this should return nothing:
+
+  Both deletions, then verify — **run the whole block below and read every line
+  of output.** It is the only thing standing between "set up" and a project whose
+  docs still describe the template. Nothing here should print a hit:
 
   ```
-  grep -rnE '<PROJECT>|\[EXAMPLE|<!--|2000-01-01|<actor>' --include='*.md' .
+  test -e SETUP.md && echo 'LEFTOVER: SETUP.md still exists'
+  grep -n 'First run' CLAUDE.md          # the one-time section must be gone
+  grep -rnE '<PROJECT>|<[a-z][^>]*>|\[EXAMPLE|<!--|2000-01-01' --include='*.md' .
   ```
 
-- **Check `README.md` separately — the grep above will not catch it.** The
+  The last pattern is deliberately the **same one from the top of this file** —
+  the discovery grep. An earlier version of this step used a narrower one, which
+  let `<your convention>`, `<how to build…>`, and the repo-layout placeholders
+  ship as if they were finished prose. In a real project it can also match an
+  autolink (`<https://…>`) or a generic (`<T>`); read the hits rather than
+  blind-fixing them, but don't narrow the pattern back down.
+
+- **Check `README.md` separately — the greps above will not catch it.** The
   template's README has no `<PROJECT>` or `[EXAMPLE]` markers, so one you never
-  rewrote (step 2) passes that grep clean, leaving the project's README
-  describing *the template*: wrong title, a dead `SETUP.md` link, and a license
-  line that may contradict `LICENSE`. Confirm by hand:
+  rewrote (step 2) passes clean, leaving the project's README describing *the
+  template*: wrong title, a dead `SETUP.md` link, and a license line that may
+  contradict `LICENSE`. Confirm by hand:
 
   ```
   head -1 README.md                                      # not "# okf-project-template"
