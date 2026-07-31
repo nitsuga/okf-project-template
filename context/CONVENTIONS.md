@@ -55,12 +55,20 @@ generated:
 `human:` prefix — use it only for genuine human authorship or review, not for
 agent-written docs a human merely merged.
 
+**`generated.at` is the last *meaningful* content change** — the spec's words, and
+consumers use it to tell a recent edit from a stale fact. So bump it when you
+change what the doc *claims*: a revised conclusion, a new section, a fact updated
+against its source. Don't bump it for a typo, a reflow, or a link repair — an `at`
+that tracks keystrokes tells a consumer nothing, and one that never moves makes
+current knowledge look abandoned. `verified` is independent: content can change
+without re-confirmation, and re-confirmation isn't a content change.
+
 Optional families — add one only when it earns its keep:
 
 | Field | Use for |
 |------|------|
 | `resource` | Canonical URI/path of the asset the concept describes. |
-| `sources` | Machine-readable inputs the concept derives from. Per entry `resource` is required; `title`, `author` optional. See § Citations and `sources`. |
+| `sources` | Machine-readable inputs the concept derives from. Per entry `resource` is required; `id` when the body cites it; `title`, `author` optional. See § Citations and `sources`. |
 | `verified` | List of `{by, at}` checks confirming the doc still matches its sources. |
 | `status` | **OKF document lifecycle**: `draft` / `stable` (default) / `deprecated`. Not the ADR state — see § Decisions. |
 | `stale_after` | `YYYY-MM-DD` after which the doc should be re-checked. |
@@ -174,6 +182,36 @@ Keep the annotation. A bare `resource:` list records that a source was consulted
 the prose records what it decided — and that reasoning is the reason to keep an
 ADR at all. Purely internal cross-references (other concepts, other ADRs) need no
 `sources` entry; the body link is enough.
+
+**Give every cited source an `id`.** The spec makes `id` optional but says it
+SHOULD be present when the body cites the source — which here is every entry,
+since `# Citations` annotates them all. The `id` is what makes attribution
+machine-readable rather than a prose coincidence: without it, a consumer can see
+*that* a doc has sources, but not which claim came from which one.
+
+**Pin a specific claim with a footnote whose label is the `id`.** The label is
+the join key into `sources`; a consumer resolves attribution through the matching
+entry, not by reading the footnote text:
+
+```markdown
+---
+sources:
+  - id: okf-spec
+    resource: https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md
+    title: Open Knowledge Format (OKF) v0.2 specification
+---
+
+`generated.at` marks the content's last meaningful change.[^okf-spec]
+
+[^okf-spec]: OKF v0.2 § Frontmatter.
+```
+
+Footnote the claims that would be *contested or checked* — a number, a quoted
+rule, a constraint someone might dispute — not every sentence. Footnoting
+everything restates the bibliography inline and is read as noise, which is how
+attribution stops being read at all. A label with no matching `sources` entry is
+a dangling citation: the spec doesn't say what a consumer should do with one, so
+don't produce one (the link-check CI fails on it).
 
 **Cite by stable anchor, not by position.** Name the section, clause, or heading
 (`ST 0601 §6.3`, `SPEC.md § Conformance`) — never a line or page number of a

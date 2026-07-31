@@ -7,7 +7,8 @@ generated:
   by: <actor>
   at: 2000-01-01T00:00:00Z
 sources:
-  - resource: https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md
+  - id: okf-spec
+    resource: https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md
     title: Open Knowledge Format (OKF) v0.2 specification
 fork: 1
 ---
@@ -53,7 +54,9 @@ item scrubs its forward-looking mentions).
 
 - Targets OKF v0.2; revisit on a new OKF version. The v0.1→v0.2 bump cost two
   field renames (`timestamp` → `generated`, body `# Citations` → `sources`), so
-  a future bump is expected to be cheap but not free.
+  a future bump is expected to be cheap but not free.[^okf-spec]
+
+[^okf-spec]: OKF v0.2 § Frontmatter — the field set this bundle targets.
 
 # Citations
 
