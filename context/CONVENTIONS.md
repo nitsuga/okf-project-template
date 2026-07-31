@@ -191,10 +191,20 @@ choice between two allowed forms, not a divergence from the spec. Guard the move
 -survival you give up with the link-check CI (see `README.md`), not with the
 absolute form.
 
-`[[slug]]` wikilinks resolve by name rather than path, so they too survive moves
-— but GitHub renders them as literal text, and the link-check CI cannot see them
-(it matches `](path)`). Not the house style here; an unverifiable link is the
-thing this section exists to prevent.
+**The `[[slug]]` variant.** Wikilinks resolve by name rather than path, so they
+survive a file moving or a type being split into its own subdir (§ Subdirectories
+expects that split). They render as literal text on GitHub, which is a real cost
+for human readers and a non-cost inside an agent-facing bundle. A project with a
+citation-dense bundle may reasonably adopt the two-form rule instead: **target
+inside `context/` → `[[slug]]`, target outside → relative markdown**. Keep that
+boundary structural — "whichever a person is more likely to read" is decided
+afresh at every link, so it drifts.
+
+Sibling-relative-everywhere is the default here because one form needs no
+decision per link and no non-standard syntax, not because the variant is unsafe:
+in the project that uses it, every wikilink resolves. Whichever you pick, the
+link-check CI verifies both forms, so neither is the unchecked one — and say
+which you chose in this section, so the next agent doesn't mix them by accident.
 
 Relationship semantics — references, nests-in, depends-on — live in the
 surrounding prose; the link itself is untyped. Broken links are not errors; they
