@@ -31,7 +31,7 @@ to do it by hand? Follow [Manual setup](#manual-setup) below instead.
 
 **3. Start working.** Your project now has a knowledge bundle (`context/`), a
 decision register (ADRs), a living plan (`planning/`), and agent working rules
-(`CLAUDE.md`) — all wired together.
+(`AGENTS.md`) — all wired together.
 
 ## The doc taxonomy
 
@@ -44,16 +44,23 @@ Four top-level doc directories, each with one job:
 | `planning/` | **Volatile** plan + present state — `ROADMAP.md` (scope/phases/open forks) and `PROGRESS.md` (Now/Next). | both |
 | `docs/` | **Human-facing** authored guides (terse). | humans |
 
-Plus [`CLAUDE.md`](CLAUDE.md) at the root — the *how-to-work* instructions an
-agent auto-loads: the doc roles above, a pre-commit checklist, and the
+Plus [`AGENTS.md`](AGENTS.md) at the root — the *how-to-work* instructions an
+agent loads: the doc roles above, a pre-commit checklist, and the
 planning-hygiene rules that keep the four from re-narrating each other. The
 reasoning behind those rules — the failure mode each one prevents — is in
 [`context/workflow-rationale.md`](context/workflow-rationale.md).
 
+`AGENTS.md` is the one canonical copy, and it is vendor-neutral by convention.
+[`CLAUDE.md`](CLAUDE.md) is a one-line adapter — `@AGENTS.md` — because Claude
+Code auto-loads that filename; agents that read `AGENTS.md` need no adapter at
+all. If yours reads a third name, add another thin pointer. **Never a second
+copy of the rules**: two copies of a doc that tells you not to keep two copies
+of a doc is the failure this whole template exists to prevent.
+
 > **This section is the template's pitch, not project content.** Setup deletes it
 > along with Quick Start and Manual setup: a set-up project's `README.md` is
 > human-facing (what it is, how to build it, how it's laid out), and the workflow
-> directives live where agents read them — `CLAUDE.md` and `context/`.
+> directives live where agents read them — `AGENTS.md` and `context/`.
 
 ## Manual setup
 
@@ -61,15 +68,16 @@ The by-hand alternative to the agent dialog (Quick Start step 2) — the same
 result, done yourself:
 
 1. Copy/clone this tree into your new project (or use it as a GitHub template).
-2. Fill in [`CLAUDE.md`](CLAUDE.md): the project description (top) and the
+2. Fill in [`AGENTS.md`](AGENTS.md): the project description (top) and the
    **Project preferences** section (commit policy, repo layout, build/test/run).
+   Leave `CLAUDE.md` as the one-line `@AGENTS.md` import (drop its comment).
 3. **Rewrite this `README.md` as your project's own** — it should end up
    **human-facing**: what the project is, how to build and run it, how it's laid
    out, its license. Delete *all* of the template's pitch and adoption sections —
    title/intro, Quick Start, this Manual setup section, "The doc taxonomy", "Why
    these rules", and the template's Structure block. Don't carry the workflow
    directives into your README: they already live where agents read them
-   (`CLAUDE.md` and [`context/`](context/workflow-rationale.md)), and a second
+   (`AGENTS.md` and [`context/`](context/workflow-rationale.md)), and a second
    copy in the README is exactly the duplication these rules exist to prevent.
    Keep Quick Start only if you want others to re-template from your repo.
 4. Set the real `generated:` (`by:` an actor, `at:` an ISO 8601 timestamp) in the
@@ -123,7 +131,8 @@ template.
 ## Structure
 
 ```
-CLAUDE.md              how-to-work instructions (agent auto-loads)
+AGENTS.md              how-to-work instructions (canonical, vendor-neutral)
+CLAUDE.md              one-line adapter: @AGENTS.md (Claude Code auto-loads)
 SETUP.md               one-time setup dialog (agent-run; self-deletes after)
 .github/workflows/
   link-check.yml.disabled   optional CI (rename to enable — fails on broken links)

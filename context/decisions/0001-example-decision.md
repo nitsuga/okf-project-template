@@ -30,7 +30,7 @@ Adopt the `okf-project-template` workflow: an [OKF](https://github.com/GoogleClo
 knowledge bundle in `context/`, a decision register (ADRs) under
 `context/decisions/`, a volatile plan in `planning/`, human docs in `docs/`, and
 immutable inputs in `references/` — governed by the planning-hygiene rules in
-`CLAUDE.md` (one job per doc; history → `log.md`; no live tallies; closing an
+`AGENTS.md` (one job per doc; history → `log.md`; no live tallies; closing an
 item scrubs its forward-looking mentions).
 
 # Alternatives considered

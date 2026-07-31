@@ -44,14 +44,18 @@ or strip.
 
 ## 2. Fill in (from the answers)
 
-- `CLAUDE.md` — the `# <PROJECT>` heading + description; the **Project
+- `AGENTS.md` — the `# <PROJECT>` heading + description; the **Project
   preferences** section (commit policy, repo layout, build/test/run, constraints).
+  This is the canonical instruction file, and the only one to edit. `CLAUDE.md`
+  is a one-line adapter (`@AGENTS.md`) that Claude Code auto-loads — strip its
+  comment, leave the import, and never copy content into it. If the user's agent
+  reads some third file, add another thin pointer rather than a second copy.
 - `README.md` — this becomes *their project's* README, and it is **human-facing**:
   what the project is, how to build/run it, how it's laid out, its license.
   Delete *all* of the template's pitch and adoption sections — title/intro, Quick
   Start, Manual setup, "The doc taxonomy", "Why these rules", and the template's
   own Structure block. Do **not** carry the workflow directives across: they live
-  where agents read them (`CLAUDE.md`, `context/workflow-rationale.md`,
+  where agents read them (`AGENTS.md`, `context/workflow-rationale.md`,
   `context/CONVENTIONS.md` § Layout), and a second copy in the README is the
   duplication these rules exist to prevent. Keep the Quick Start only if they want
   others to re-template from their repo.
@@ -91,7 +95,7 @@ a concept in `context/`, add an `index.md` entry, append a `log.md` line.
 When setup is complete:
 
 - **Delete this `SETUP.md`.**
-- **Delete the "First run — set up this project" section from `CLAUDE.md`.**
+- **Delete the "First run — set up this project" section from `AGENTS.md`.**
 
   Both deletions, then verify — **run the whole block below and read every line
   of output.** It is the only thing standing between "set up" and a project whose
@@ -99,7 +103,8 @@ When setup is complete:
 
   ```
   test -e SETUP.md && echo 'LEFTOVER: SETUP.md still exists'
-  grep -n 'First run' CLAUDE.md          # the one-time section must be gone
+  grep -n 'First run' AGENTS.md          # the one-time section must be gone
+  grep -q '^@AGENTS.md' CLAUDE.md || echo 'BROKEN: CLAUDE.md no longer imports AGENTS.md'
   grep -rnE '<PROJECT>|<[a-z][^>]*>|\[EXAMPLE|<!--|2000-01-01' --include='*.md' .
   ```
 
@@ -125,4 +130,4 @@ When setup is complete:
 - Commit it all (e.g. "Set up <project> from okf-project-template").
 
 The onboarding scaffolding is now gone; the project runs on its own docs. From
-here, follow the ongoing rules in `CLAUDE.md` § Planning hygiene.
+here, follow the ongoing rules in `AGENTS.md` § Planning hygiene.

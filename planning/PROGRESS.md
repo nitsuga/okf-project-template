@@ -20,7 +20,7 @@ chronological history (what landed when, decision detail) lives in
      That test is the guard on this section's size. Tasks leave when they close;
      capabilities never do, so a "Now" that collects them only grows. -->
 
-Project scaffolded from `okf-project-template`. Fill in `CLAUDE.md` and start.
+Project scaffolded from `okf-project-template`. Fill in `AGENTS.md` and start.
 
 ## In progress
 
