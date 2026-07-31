@@ -17,6 +17,12 @@ knowledge is compiled here once and kept current, not re-derived each session.
 The agent writes and maintains this directory; humans curate sources and direct
 the work. On disagreement, the OKF spec wins over this doc.
 
+**Where a rule in this file was itself decided by an ADR, cite it** on the spot —
+`Decided in [NNNN-slug](./decisions/NNNN-slug.md).` The rule and the reasoning
+that produced it then travel together, and the next agent tempted to "simplify" a
+convention finds the argument before the edit rather than after. A rule whose ADR
+nobody can find gets relitigated from scratch.
+
 # Layout
 
 | Path | Role |
@@ -81,6 +87,16 @@ OKF v0.2 also defines one type with spec-level semantics, `Attested Computation`
 (a concept carrying `runtime` / `parameters` / `computation` / `executor` /
 `attester`, so a value's meaning and its verifiable derivation live together).
 Use it only if this project actually computes attested values; otherwise ignore it.
+
+Keep this table to the types **actually in use**, and name the rest separately:
+
+> _Anticipated but not yet used: `<Type>`; `<Type>` has an `index.md` section but
+> no concepts yet._
+
+That line is a forward-looking claim, so the scrub rule applies to it: when the
+first concept of an anticipated type lands, move the type into the table above
+and delete it from this note. Otherwise the vocabulary drifts into a wish list
+and stops describing the bundle.
 
 <!-- e.g. a data project might add `Dataset`; a standards-heavy one `Standard
      Reference`. Delete types you won't use. -->
