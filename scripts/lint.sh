@@ -9,18 +9,20 @@ One command, no dependencies. Runs the checks that keep the docs from drifting,
 so `AGENTS.md` § Planning hygiene has teeth locally and the CI is just this script:
 
     ./scripts/lint.sh            # check the whole repo (warnings don't fail)
-    ./scripts/lint.sh --strict   # treat warnings as failures too (for CI)
+    ./scripts/lint.sh --strict   # optional: treat warnings as failures too
 
 Severity:
   FAIL  integrity + conformance + lifecycle -- must fix.
   WARN  heuristics (tallies, orphans, type drift, stale_after, ...) -- investigate.
   NOTE  informational.
 
-Template state: while `SETUP.md` is present the repo is treated as an
-un-customized template, and the setup-completeness markers (`<PROJECT>`,
-`[EXAMPLE`, sentinel `2000-01-01`, `<!--` guidance comments, ...) are reported
-as NOTE instead of FAIL. Finish setup (which deletes `SETUP.md`) and the same
-markers become failures.
+Template state: a repo is an un-customized template only when `SETUP.md` is
+present AND the README still advertises the template AND `AGENTS.md` still has
+its "First run" onboarding section. While in that state the setup markers are
+summarized as a NOTE instead of failing. Any partial state (e.g. `SETUP.md`
+left behind after customizing) is enforced: unambiguous markers (`<PROJECT>`,
+`[EXAMPLE`, sentinel `2000-01-01`) fail; ambiguous ones that also match ordinary
+Markdown (autolinks like `<https://...>`, `<!--` comments) only warn.
 
 This file is the single source of truth for the checks. `context/CONVENTIONS.md`
 § Operations points at it rather than re-enumerating the rules, so prose and
@@ -87,14 +89,6 @@ adr_files = sorted(
 
 concept_slugs = {p.stem for p in ROOT.glob("context/**/*.md")}
 
-TYPE_VOCABULARY = {
-    "Reference",
-    "Concept",
-    "Component",
-    "Decision",
-    "Conventions",
-    "Attested Computation",
-}
 DECIDED_STATUSES = {"accepted", "superseded", "deferred"}
 DECISION_STATUSES = DECIDED_STATUSES | {"proposed"}
 
@@ -133,6 +127,25 @@ def top_level_keys(block: str | None) -> set[str]:
     if block is None:
         return set()
     return set(re.findall(r"^([\w.-]+):", block, re.M))
+
+
+def type_vocabulary() -> set[str] | None:
+    """Recognized concept types, parsed from CONVENTIONS.md's type table.
+
+    The table is the single source of truth — README step 4 / SETUP.md tell an
+    adopter to trim it to their domain, so this reads it rather than keeping a
+    second copy here. Returns None when the table can't be found, and the caller
+    then skips the check rather than false-warning on every concept.
+    """
+    p = ROOT / "context" / "CONVENTIONS.md"
+    if not p.exists():
+        return None
+    m = re.search(r"\| Type \| Use for \|.*?(?=\n\n|\Z)", read(p), re.DOTALL)
+    if not m:
+        return None
+    vocab = set(re.findall(r"^\|\s*`([^`]+)`\s*\|", m.group(0), re.M))
+    vocab.add("Attested Computation")  # OKF-spec type, declared in prose not the table
+    return vocab
 
 
 # --------------------------------------------------------- 1. link integrity
@@ -188,6 +201,8 @@ if n_rel_links and n_wikilinks:
 
 # --------------------------------------------- 2. bundle shape / conformance
 
+vocab = type_vocabulary()
+
 for p in concept_files:
     block, _ = frontmatter_block(p)
     if block is None:
@@ -197,7 +212,7 @@ for p in concept_files:
     if not t:
         fail(f"{rel(p)}: frontmatter missing required `type`")
         continue
-    if t not in TYPE_VOCABULARY:
+    if vocab is not None and t not in vocab:
         warn(
             f'{rel(p)}: unrecognized type "{t}" — emerging type? add it to the '
             "CONVENTIONS type vocabulary"
@@ -330,35 +345,51 @@ if roadmap.exists():
             t = link.split("#")[0].strip()
             resolved = (roadmap.parent / t).resolve()
             if os.path.normpath(str(resolved)) in registered_adr_paths:
-                warn(f'ROADMAP "Open forks" still links a decided ADR: {link} (scrub it on close)')
+                fail(f'ROADMAP "Open forks" still links a decided ADR: {link} (scrub it on close)')
         for num in re.findall(r"[Ff]ork\s*#?\s*(\d+)", section):
             if int(num) in register_fork_nums:
-                warn(f'ROADMAP "Open forks" still lists decided fork #{num} (scrub it on close)')
+                fail(f'ROADMAP "Open forks" still lists decided fork #{num} (scrub it on close)')
 
 # ----------------------------------------------------- 4. setup completeness
 
 def scan_setup_markers():
-    pats = [
-        (re.compile(r"<PROJECT>|<[a-z][^>]*>"), "placeholder <...>"),
+    # Unambiguous template leftovers — fail once setup has begun.
+    fail_pats = [
+        (re.compile(r"<PROJECT>"), "<PROJECT> placeholder"),
         (re.compile(r"\[EXAMPLE"), "EXAMPLE artifact"),
-        (re.compile(r"<!--"), "setup guidance comment (<!--)"),
         (re.compile(r"2000-01-01"), "sentinel date 2000-01-01"),
     ]
-    markers = []
+    # Ambiguous — also match ordinary Markdown (autolinks, generics, TODO
+    # comments), so they are advisory and never a build failure.
+    warn_pats = [
+        (re.compile(r"<[a-z][^>]*>"), "placeholder <...>"),
+        (re.compile(r"<!--"), "guidance comment (<!--)"),
+    ]
+    fails: list[tuple] = []
+    warns: list[tuple] = []
     for p in md_files:
         text = read(p)
         text = re.sub(r"```.*?```", "", text, flags=re.DOTALL)
         text = re.sub(r"`[^`]*`", "", text)
-        for rx, label in pats:
+        for rx, label in fail_pats:
             for m in rx.finditer(text):
-                markers.append((p, label, m.group(0)))
-    return markers
+                fails.append((p, label, m.group(0)))
+        for rx, label in warn_pats:
+            for m in rx.finditer(text):
+                warns.append((p, label, m.group(0)))
+    return fails, warns
+
+
+def show(s: str) -> str:
+    return re.sub(r"\s+", " ", s).strip()
 
 
 setup_present = (ROOT / "SETUP.md").exists()
 
 agents = ROOT / "AGENTS.md"
-first_run = "First run" in read(agents) if agents.exists() else False
+first_run = False
+if agents.exists():
+    first_run = bool(re.search(r"^##\s+First run\b", read(agents), re.M))
 
 claude = ROOT / "CLAUDE.md"
 claude_ok = True
@@ -366,35 +397,47 @@ if claude.exists():
     lines = [l for l in read(claude).splitlines() if l.strip()]
     claude_ok = bool(lines) and lines[0].strip() == "@AGENTS.md"
 
+# A README never rewritten for setup still advertises the template. Check the
+# title plus the adoption sections README/SETUP document as the telltales.
+readme_template = False
 readme = ROOT / "README.md"
-readme_ok = True
 if readme.exists():
-    first_line = read(readme).splitlines()[0].strip()
-    readme_ok = first_line != "# okf-project-template"
+    text = read(readme)
+    readme_template = (
+        text.splitlines()[0].strip() == "# okf-project-template"
+        or bool(re.search(r"Use this template|Manual setup|doc taxonomy|Why these rules", text))
+    )
 
-setup_items: list[str] = []
+# Fully un-customized: all three onboarding signals still agree. Anything less
+# is a partial setup (e.g. finished customizing but forgot to delete SETUP.md),
+# which must be enforced rather than reported clean.
+template_state = setup_present and readme_template and first_run
+
+marker_fails, marker_warns = scan_setup_markers()
+
+fail_leftovers: list[str] = []
 if first_run:
-    setup_items.append('"First run" section still in AGENTS.md')
+    fail_leftovers.append('"First run" section still in AGENTS.md')
 if not claude_ok:
-    setup_items.append("CLAUDE.md does not start with @AGENTS.md")
-if not readme_ok:
-    setup_items.append('README.md still titled "okf-project-template"')
-def show(s: str) -> str:
-    return re.sub(r"\s+", " ", s).strip()
+    fail_leftovers.append("CLAUDE.md does not start with @AGENTS.md")
+if readme_template:
+    fail_leftovers.append("README.md still advertises the template")
+if setup_present:
+    fail_leftovers.append("SETUP.md still present")
+fail_leftovers += [f"{rel(p)}: {label} ({show(m)!r})" for p, label, m in marker_fails]
+warn_leftovers = [f"{rel(p)}: {label} ({show(m)!r})" for p, label, m in marker_warns]
 
-
-setup_items += [
-    f"{rel(p)}: {label} ({show(m)!r})" for p, label, m in scan_setup_markers()
-]
-
-if setup_items:
-    if setup_present:
-        note("template not yet customized — run SETUP.md; setup markers present:")
-        for it in setup_items:
-            note(f"  {it}")
-    else:
-        for it in setup_items:
-            fail(f"setup leftover: {it}")
+if template_state:
+    n = len(marker_fails) + len(marker_warns)
+    note(
+        f"template not yet customized (SETUP.md present): {n} setup marker(s); "
+        "unambiguous ones become failures, ambiguous ones warnings, once setup completes"
+    )
+else:
+    for it in fail_leftovers:
+        fail(f"setup leftover: {it}")
+    for it in warn_leftovers:
+        warn(f"possible setup leftover (advisory): {it}")
 
 # ------------------------------------------------- 5. soft heuristics (warn)
 

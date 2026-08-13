@@ -5,10 +5,10 @@
 #   git mv .github/workflows/link-check.yml.disabled .github/workflows/link-check.yml
 #   git commit -m "Enable docs lint" && git push
 #
-# It then runs `scripts/lint.sh --strict` on every push / pull request, failing
-# on any FAIL check and, with --strict, on warnings too. The canonical list of
-# checks lives in that script's docstring — this workflow is only the entry
-# point, so the rules have one home rather than a second copy here.
+# It then runs `scripts/lint.sh` on every push / pull request, failing on FAIL
+# checks only — warnings are advisory heuristics, not a CI contract. The
+# canonical list of checks lives in that script's docstring — this workflow is
+# only the entry point, so the rules have one home rather than a second copy here.
 name: link-check
 on: [push, pull_request]
 jobs:
@@ -17,4 +17,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Lint docs
-        run: ./scripts/lint.sh --strict
+        run: ./scripts/lint.sh
