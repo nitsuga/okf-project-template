@@ -20,9 +20,11 @@ Template state: a repo is an un-customized template only when `SETUP.md` is
 present AND the README still advertises the template AND `AGENTS.md` still has
 its "First run" onboarding section. While in that state the setup markers are
 summarized as a NOTE instead of failing. Any partial state (e.g. `SETUP.md`
-left behind after customizing) is enforced: unambiguous markers (`<PROJECT>`,
-`[EXAMPLE`, sentinel `2000-01-01`) fail; ambiguous ones that also match ordinary
-Markdown (autolinks like `<https://...>`, `<!--` comments) only warn.
+left behind after customizing) is enforced: unfilled placeholders (`<PROJECT>`,
+phrase-like angle-bracket fill-ins, `[EXAMPLE`, sentinel `2000-01-01`) fail;
+ordinary Markdown that only looks like one (autolinks `<https://...>`, emails
+`<team@...>`, single-token generics like `<T>`, HTML tags, `<!--` comments)
+only warns.
 
 This file is the single source of truth for the checks. `context/CONVENTIONS.md`
 § Operations points at it rather than re-enumerating the rules, so prose and
@@ -352,17 +354,25 @@ if roadmap.exists():
 
 # ----------------------------------------------------- 4. setup completeness
 
+def classify_angle(content: str) -> bool:
+    """True -> FAIL (an unfilled placeholder phrase); False -> WARN (ordinary
+    Markdown that only looks like one: autolink, email, or HTML tag)."""
+    if not re.search(r"\s", content):
+        return False  # single token: <T>, <br>, <actor>
+    if "://" in content or "@" in content:
+        return False  # autolink or email
+    if "=" in content:
+        return False  # HTML tag with attributes, e.g. <div class="x">
+    return True
+
+
 def scan_setup_markers():
-    # Unambiguous template leftovers — fail once setup has begun.
     fail_pats = [
         (re.compile(r"<PROJECT>"), "<PROJECT> placeholder"),
         (re.compile(r"\[EXAMPLE"), "EXAMPLE artifact"),
         (re.compile(r"2000-01-01"), "sentinel date 2000-01-01"),
     ]
-    # Ambiguous — also match ordinary Markdown (autolinks, generics, TODO
-    # comments), so they are advisory and never a build failure.
     warn_pats = [
-        (re.compile(r"<[a-z][^>]*>"), "placeholder <...>"),
         (re.compile(r"<!--"), "guidance comment (<!--)"),
     ]
     fails: list[tuple] = []
@@ -377,6 +387,12 @@ def scan_setup_markers():
         for rx, label in warn_pats:
             for m in rx.finditer(text):
                 warns.append((p, label, m.group(0)))
+        for m in re.finditer(r"<[a-z][^>]*>", text):
+            content = m.group(0)[1:-1]
+            if classify_angle(content):
+                fails.append((p, "unfilled placeholder", m.group(0)))
+            else:
+                warns.append((p, "placeholder <...>", m.group(0)))
     return fails, warns
 
 
@@ -397,15 +413,18 @@ if claude.exists():
     lines = [l for l in read(claude).splitlines() if l.strip()]
     claude_ok = bool(lines) and lines[0].strip() == "@AGENTS.md"
 
-# A README never rewritten for setup still advertises the template. Check the
-# title plus the adoption sections README/SETUP document as the telltales.
+# A README never rewritten for setup still advertises the template. The title is
+# decisive; otherwise require several adoption sections to survive together —
+# "Use this template" alone is legitimately kept by a project that wants others
+# to re-template from it, so it is not a telltale on its own.
+adoption_probes = ("Manual setup", "doc taxonomy", "Why these rules")
 readme_template = False
 readme = ROOT / "README.md"
 if readme.exists():
     text = read(readme)
     readme_template = (
         text.splitlines()[0].strip() == "# okf-project-template"
-        or bool(re.search(r"Use this template|Manual setup|doc taxonomy|Why these rules", text))
+        or sum(p in text for p in adoption_probes) >= 2
     )
 
 # Fully un-customized: all three onboarding signals still agree. Anything less
