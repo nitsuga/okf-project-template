@@ -354,6 +354,21 @@ if roadmap.exists():
 
 # ----------------------------------------------------- 4. setup completeness
 
+# Standard HTML element names, so a boolean-attribute tag like `<input disabled>`
+# (whitespace but no `=`) is recognized as HTML rather than an unfilled
+# placeholder.
+HTML_TAGS = frozenset("""
+html base head link meta style title body address article aside footer header
+h1 h2 h3 h4 h5 h6 main nav section blockquote dd div dl dt figcaption figure hr
+li ol p pre ul a abbr b bdi bdo br cite code data dfn em i kbd mark q rp rt ruby
+s samp small span strong sub sup time u var wbr area audio img map track video
+embed iframe object param picture portal source svg math canvas noscript script
+del ins caption col colgroup table tbody td tfoot th thead tr button datalist
+fieldset form input label legend meter optgroup option output progress select
+textarea details dialog menu summary slot template
+""".split())
+
+
 def classify_angle(content: str) -> bool:
     """True -> FAIL (an unfilled placeholder phrase); False -> WARN (ordinary
     Markdown that only looks like one: autolink, email, or HTML tag)."""
@@ -361,8 +376,10 @@ def classify_angle(content: str) -> bool:
         return False  # single token: <T>, <br>, <actor>
     if "://" in content or "@" in content:
         return False  # autolink or email
+    if content.split(None, 1)[0].lower() in HTML_TAGS:
+        return False  # HTML tag: bare, boolean attributes, or valued attributes
     if "=" in content:
-        return False  # HTML tag with attributes, e.g. <div class="x">
+        return False  # non-standard tag with attributes, e.g. <my-widget data-x="1">
     return True
 
 
