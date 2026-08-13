@@ -124,8 +124,7 @@ So:
   - `context/` — agent knowledge bundle (maintain this).
   - `docs/` — human-facing guides (terse).
   - `planning/` — live plan + progress. Read first for "what now".
-  - `<external/ · vendor/>` — <vendored third-party code, if any. Read, never
-    restyle or reformat.>
+  - `<external/ · vendor/>` — <vendored third-party code, if any. Read, never restyle or reformat.>
   - `<src/ · assets/ · …>` — <your code / assets>.
 - **Build / test / run**: <how to build, test, and run this project>.
 - **Anything else an agent must know**: <domain constraints, review expectations>.
