@@ -288,13 +288,19 @@ line. One source may touch several docs.
 with citations back to `../references/` or external URLs. File valuable query
 results back as new concepts so explorations compound.
 
-**Lint.** Periodically check for: contradictions between docs, stale claims
-superseded by newer sources, **forward-looking claims a later change resolved**
-(an "open decision" / "candidate" / "Next" item that's since been decided or done
-— the future-tense analog of a stale claim), orphan concepts with no inbound
-links, concepts mentioned but not written, broken-link targets worth creating,
-and type drift (synonyms / casing). No trigger fires the lint automatically — run
-it periodically (e.g. when closing a fork, or before a release).
+**Lint.** `scripts/lint.sh` (run `./scripts/lint.sh`, `--strict` for CI) is the
+automated backstop: broken/root-absolute links, dangling wikilinks and
+footnotes, concept `type` conformance, reserved-file frontmatter, ADR +
+register lifecycle (decided-but-unregistered, proposed-but-registered,
+stale "Open forks" entries), setup leftovers, and soft warnings (live tallies,
+orphan concepts, type drift, `stale_after`). **The script's docstring is the
+canonical list of checks** — don't re-enumerate them here, or the prose and code
+drift apart. What the script *can't* catch stays a periodic manual pass:
+contradictions between docs, stale claims superseded by newer sources, concepts
+mentioned in prose but never written, and the "would this still be true after a
+month of no work" test that separates knowledge from status. No trigger fires
+the lint automatically — run it periodically (e.g. when closing a fork, or
+before a release).
 
 # Source discipline
 
