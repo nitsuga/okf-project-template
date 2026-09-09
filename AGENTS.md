@@ -39,7 +39,10 @@ v0.2 bundle.
 - [`context/CONVENTIONS.md`](context/CONVENTIONS.md) — frontmatter, type
   vocabulary, ingest/query/lint rules. Read before editing `context/`.
 - `context/` is agent-owned. `references/` is append-only: read it, add a snapshot
-  on a directed ingest, never edit one that's already there.
+  on a directed ingest, never edit one that's already there. The one exception is
+  **withdrawal** — removing a snapshot whose content this project may not
+  redistribute — which carries its own requirements (a link file, pinned
+  replacements, an ADR); see `context/CONVENTIONS.md` § Source discipline.
 - For the live plan and status, read [`planning/PROGRESS.md`](planning/PROGRESS.md)
   and [`planning/ROADMAP.md`](planning/ROADMAP.md).
 
@@ -120,7 +123,9 @@ So:
 - **Repo layout**: list your top-level dirs and what each holds, and mark the
   ones an agent must not write to, e.g.
   - `references/` — source-of-truth inputs, append-only. Read; add on a directed
-    ingest; never edit what's there.
+    ingest; never edit what's there. A snapshot may be *withdrawn* only when
+    redistributing it would infringe, and only with the link file, pinned
+    replacements, and ADR that CONVENTIONS § Source discipline requires.
   - `context/` — agent knowledge bundle (maintain this).
   - `docs/` — human-facing guides (terse).
   - `planning/` — live plan + progress. Read first for "what now".
