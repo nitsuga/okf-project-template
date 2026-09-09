@@ -6,6 +6,10 @@ tags: [meta, okf, conventions]
 generated:
   by: <actor>
   at: 2000-01-01T00:00:00Z
+sources:
+  - id: okf-ts
+    resource: https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md
+    title: Open Knowledge Format (OKF) v0.2 specification — § 5, timestamp format
 ---
 
 # Purpose
@@ -75,12 +79,15 @@ Optional families — add one only when it earns its keep:
 
 **Every timestamp-valued key is an ISO 8601 datetime with an explicit UTC
 offset** — `generated.at`, `verified[].at`, `stale_after`, `sources[].last_modified`,
-and `usage_window.from`/`to` alike. A bare date (`2026-12-31`) is ambiguous across
-timezones and consumers must reject it. This was a v0.2 spec clarification;[^okf-ts]
-if you're on an older mental model of the spec, don't reintroduce bare dates.
+and `usage_window.from`/`to` alike.[^okf-ts] A bare date (`2026-12-31`) is
+ambiguous across timezones; the spec says a consumer must not reject one outright,
+but this bundle holds itself to the stricter form so no value needs a fallback
+read. This was a v0.2 spec clarification — if you're on an older mental model of
+the spec, don't reintroduce bare dates. (`log.md`'s `## YYYY-MM-DD` day headings
+are unaffected — they group entries, not a field value.)
 
-[^okf-ts]: OKF SPEC.md §5/§11, "make every timestamp an ISO 8601 datetime with an
-    explicit offset" (2026-08-21).
+[^okf-ts]: "Every timestamp-valued key in OKF is an ISO 8601 datetime with an
+    explicit UTC offset." — SPEC.md § 5.
 
 **Migrating from OKF v0.1:** `timestamp` was replaced by `generated: {by, at}`,
 and the body `# Citations` list by frontmatter `sources`. Consumers may fall back
