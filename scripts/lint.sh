@@ -36,7 +36,7 @@ import os
 import re
 import sys
 from collections import Counter
-from datetime import date
+from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(sys.argv[1]).resolve().parent
@@ -500,18 +500,21 @@ for p in concept_files:
     if ap not in referenced_paths and p.stem not in referenced_slugs:
         warn(f"{rel(p)}: orphan concept — no inbound link from any doc")
 
-today = date.today()
+now = datetime.now(timezone.utc)
 for p in concept_files:
     block, _ = frontmatter_block(p)
     sa = field(block, "stale_after")
     if not sa:
         continue
-    m = re.fullmatch(r"(\d{4})-(\d{2})-(\d{2})", sa)
-    if not m:
-        warn(f'{rel(p)}: stale_after "{sa}" not YYYY-MM-DD')
+    try:
+        dt = datetime.fromisoformat(sa.replace("Z", "+00:00"))
+    except ValueError:
+        warn(f'{rel(p)}: stale_after "{sa}" not an ISO 8601 datetime with an explicit UTC offset')
         continue
-    d = date(int(m.group(1)), int(m.group(2)), int(m.group(3)))
-    if d < today:
+    if dt.tzinfo is None:
+        warn(f'{rel(p)}: stale_after "{sa}" has no explicit UTC offset')
+        continue
+    if dt < now:
         warn(f"{rel(p)}: stale_after {sa} is in the past")
 
 for p in concept_files:
