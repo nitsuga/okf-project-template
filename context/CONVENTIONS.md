@@ -314,6 +314,15 @@ still be true after a month of no work" test that separates knowledge from
 status. No trigger fires the lint automatically — run it periodically (e.g. when
 closing a fork, or before a release).
 
+**Before a release, also check the changelog against the tag it's attributed
+to** — not just that it exists. *Observed*: a later commit that touched an
+earlier feature's behavior had rewritten that feature's already-released
+changelog section as though the new behavior shipped with it, leaving the
+section under the current, unreleased version silently empty of the change it
+actually introduced. A changelog entry describes what a given release shipped,
+frozen at that release; a later change gets its own new entry, never a rewrite
+of an old one.
+
 # Source discipline
 
 `../references/` is **append-only**. Never edit, reformat, or delete a file that
@@ -326,3 +335,16 @@ snapshot, not the directory's file count.
 Correcting a source you believe is wrong is *never* an edit there: the correction
 is knowledge, so it belongs in a `context/` concept that cites the original and
 says where it departs from it.
+
+**Withdrawal — the one exception.** A snapshot may be *removed* when keeping it
+would redistribute content this project has no license to redistribute — e.g. a
+vendor's copyrighted documentation, discovered ahead of the repo going public. It
+is the sole exception and not a license to prune: a withdrawal requires, in the
+same commit, a **link file** in the snapshot's place (what the source was, where
+it lives, the version and date observed, its terms), **pinned replacements** for
+the claims it carried wherever a redistributable equivalent exists, and an **ADR**
+recording what was lost — because a withdrawal destroys ground truth, and that
+cost belongs on the record. Prefer a redistributable source in the first place:
+where a vendor publishes both documentation and a reference implementation, the
+implementation is usually the better snapshot, and a commit pin is immutable in
+exactly the way this directory needs.

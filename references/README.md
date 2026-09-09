@@ -5,8 +5,11 @@ datasets, PDFs, and their text extracts. They are the ground truth that
 `context/` synthesizes.
 
 **Append-only, not read-only.** A directed ingest may *add* a new source here;
-nothing already here is ever edited, reformatted, or deleted. Each snapshot is
-immutable — the directory still grows.
+nothing already here is ever edited or reformatted. Each snapshot is immutable
+— the directory still grows. The one exception is **withdrawal** — removing a
+snapshot this project has no license to redistribute; see
+[`../context/CONVENTIONS.md`](../context/CONVENTIONS.md) § Source discipline
+for the link-file + pinned-replacement + ADR requirements that come with it.
 
 - Put the raw source here (a PDF, a `.txt`, a vendored doc, a link file), exactly
   as it came. If it needs correcting or interpreting, that's a `context/` concept
