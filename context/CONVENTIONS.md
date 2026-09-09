@@ -71,7 +71,16 @@ Optional families — add one only when it earns its keep:
 | `sources` | Machine-readable inputs the concept derives from. Per entry `resource` is required; `id` when the body cites it; `title`, `author` optional. See § Citations and `sources`. |
 | `verified` | List of `{by, at}` checks confirming the doc still matches its sources. |
 | `status` | **OKF document lifecycle**: `draft` / `stable` (default) / `deprecated`. Not the ADR state — see § Decisions. |
-| `stale_after` | `YYYY-MM-DD` after which the doc should be re-checked. |
+| `stale_after` | ISO 8601 datetime with an explicit UTC offset (e.g. `2026-12-31T00:00:00Z`) after which the doc should be re-checked. |
+
+**Every timestamp-valued key is an ISO 8601 datetime with an explicit UTC
+offset** — `generated.at`, `verified[].at`, `stale_after`, `sources[].last_modified`,
+and `usage_window.from`/`to` alike. A bare date (`2026-12-31`) is ambiguous across
+timezones and consumers must reject it. This was a v0.2 spec clarification;[^okf-ts]
+if you're on an older mental model of the spec, don't reintroduce bare dates.
+
+[^okf-ts]: OKF SPEC.md §5/§11, "make every timestamp an ISO 8601 datetime with an
+    explicit offset" (2026-08-21).
 
 **Migrating from OKF v0.1:** `timestamp` was replaced by `generated: {by, at}`,
 and the body `# Citations` list by frontmatter `sources`. Consumers may fall back
